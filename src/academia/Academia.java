@@ -620,7 +620,7 @@ public class Academia {
                     id = Integer.parseInt(scan.nextLine());
                     Exercicio e = exer.buscaPorId(id);
                     if (e != null) {
-                        t.setExercício(e);
+//                        t.setExerci�cio(e);
                     } else {
                         System.out.println("Não deu certo");
                         break;
@@ -631,7 +631,7 @@ public class Academia {
                     id = Integer.parseInt(scan.nextLine());
                     Exercicio_Aplicacao ea = exer_ap.buscaPorId(id);
                     if (ea != null) {
-                        t.setExercícioAplicacao(ea);
+//                        t.setExerci�cioAplicacao(ea);
                     } else {
                         System.out.println("Não deu certo");
                         break;
