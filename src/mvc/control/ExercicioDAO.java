@@ -64,6 +64,7 @@ public class ExercicioDAO {
                 Exercicio exercicio = new Exercicio();
 
                 exercicio.setId(id);
+                exercicio.setNome(nome);
                 exercicio.setDescricao(descricao);
                 exercicio.setDataModificacao(dataEHoraAtualModificacao);
                 exercicio.setDataCriacao(dataEHoraAtualCriacao);
@@ -102,7 +103,7 @@ public class ExercicioDAO {
 
             stmt.setString(1, exercicio.getNome());
             stmt.setString(2, exercicio.getDescricao());
-            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(exercicio.getDataCriacao()));
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(exercicio.getDataModificacao()));
             stmt.setLong(4, exercicio.getId());
             
             stmt.execute();

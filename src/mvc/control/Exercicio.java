@@ -61,7 +61,7 @@ public class Exercicio {
 
     @Override
     public String toString() {
-        return "ID = " + id + ", nome=" + nome + ", descricao=" + descricao + '}';
+        return "ID = " + id + ", nome=" + nome + ", descricao=" + descricao;
     }
       
      

@@ -5,21 +5,17 @@
 package mvc.control;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author lucas
  */
 public class Exercicio_Aplicacao {
-    private static long serial;
     private long id;
     private String descricao;
-    private LocalDate dataCriacao;
-    private LocalDate dataModificacao;
-
-    public Exercicio_Aplicacao() {
-        id = ++Exercicio_Aplicacao.serial;
-    }
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataModificacao;
 
     public long getId() {
         return id;
@@ -37,25 +33,25 @@ public class Exercicio_Aplicacao {
         this.descricao = descricao;
     }
 
-    public LocalDate getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDate dataCriacao) {
+    public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
-    public LocalDate getDataModificacao() {
+    public LocalDateTime getDataModificacao() {
         return dataModificacao;
     }
 
-    public void setDataModificacao(LocalDate dataModificacao) {
+    public void setDataModificacao(LocalDateTime dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
 
     @Override
     public String toString() {
-        return "Exercicio_Aplicacao{" + "id=" + id + ", descricao=" + descricao + '}';
+        return "ID = " + id + ", descricao = " + descricao;
     }
     
     

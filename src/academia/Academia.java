@@ -368,11 +368,13 @@ public class Academia {
     }
 
     private void mostrarExercicios() {
+        System.out.println("\nEXERCICIOS");
         List<Exercicio> lista;
         lista = exer.lista(null);
         for (Exercicio exercicio : lista) {
             System.out.println(exercicio);
         }
+        System.out.println("\n");
     }
 
     private Exercicio obtemExercicio(int id) {
@@ -382,41 +384,42 @@ public class Academia {
     }
 
     private void cadastrarExercicioAplicacao() {
-        int opcao, id;
-
+        int id, opcao;
+        Exercicio_Aplicacao aplicacao;
         do {
             opcao = gui.menuCadastrarExercicioAplicacao();
 
             switch (opcao) {
                 case 1:
                     Exercicio_Aplicacao e_ap = new Exercicio_Aplicacao();
-                    System.out.println("Informe como a maneira que se dará as repetições dos exercicios");
+                    System.out.println("Informe a aplicação dos exercicios");
                     e_ap.setDescricao(scan.nextLine());
-                    e_ap.setDataCriacao(LocalDate.now());
+                    e_ap.setDataCriacao(LocalDateTime.now());
+                    e_ap.setDataModificacao(LocalDateTime.now());
                     exer_ap.adiciona(e_ap);
                     break;
 
                 case 2:
-                    exer_ap.mostrarTodos();
+                    mostrarExerciciosAplicacao();
                     break;
 
                 case 3:
-                    exer_ap.mostrarTodos();
-                    System.out.println("Informe o id para remover:");
+                    mostrarExerciciosAplicacao();
+                    System.out.println("Informe o id do exercicio aplicação que deseja remover:");
                     id = Integer.parseInt(scan.nextLine());
-                    exer_ap.remover(id);
+                    aplicacao = obtemExercicioAplicacao(id);
+                    exer_ap.exclui(aplicacao);
                     break;
 
                 case 4:
-                    exer_ap.mostrarTodos();
-                    System.out.println("Informe o id que deseja editar:");
+                    mostrarExerciciosAplicacao();
+                    System.out.println("Informe o id do exercicio que deseja editar:");
                     id = Integer.parseInt(scan.nextLine());
-
-                    if (exer_ap.buscaPorId(id) != null) {
-                        System.out.println("Informe a nova descrição:");
-                        String novaDescrição = scan.nextLine();
-                        exer_ap.alterar(id, novaDescrição);
-                    }
+                    aplicacao = obtemExercicioAplicacao(id);
+                    System.out.println("Informe a descrição:");
+                    aplicacao.setDescricao(scan.nextLine());
+                    aplicacao.setDataModificacao(LocalDateTime.now());
+                    exer_ap.altera(aplicacao);
                     break;
                 case 5:
                     System.out.println("Saindo..");
@@ -424,6 +427,22 @@ public class Academia {
             }
 
         } while (opcao != 5);
+    }
+
+        private void mostrarExerciciosAplicacao() {
+        System.out.println("\nEXERCICIOS APLICACAO");
+        List<Exercicio_Aplicacao> lista;
+        lista = exer_ap.lista(null);
+        for (Exercicio_Aplicacao exercicio_Aplicacao : lista) {
+            System.out.println(exercicio_Aplicacao);
+        }
+        System.out.println("\n");
+    }
+
+    private Exercicio_Aplicacao obtemExercicioAplicacao(int id) {
+        Exercicio_Aplicacao aplicacao = new Exercicio_Aplicacao();
+        aplicacao.setId(id);
+        return aplicacao;
     }
 
     private void cadastrarDivisaoDeTreino() {
@@ -643,16 +662,16 @@ public class Academia {
 //                        break;
 //                    }
 
-                    exer_ap.mostrarTodos();
-                    System.out.println("Escolha a forma como o execicio será aplicado: ");
-                    id = Integer.parseInt(scan.nextLine());
-                    Exercicio_Aplicacao ea = exer_ap.buscaPorId(id);
-                    if (ea != null) {
-//                        t.setExerci�cioAplicacao(ea);
-                    } else {
-                        System.out.println("Não deu certo");
-                        break;
-                    }
+//                    exer_ap.mostrarTodos();
+//                    System.out.println("Escolha a forma como o execicio será aplicado: ");
+//                    id = Integer.parseInt(scan.nextLine());
+//                    Exercicio_Aplicacao ea = exer_ap.buscaPorId(id);
+//                    if (ea != null) {
+////                        t.setExerci�cioAplicacao(ea);
+//                    } else {
+//                        System.out.println("Não deu certo");
+//                        break;
+//                    }
 
                     treinoo.mostrarTodos();
                     System.out.println("Escolha um treino: ");
@@ -664,11 +683,11 @@ public class Academia {
                         System.out.println("Não deu certo");
                         break;
                     }
-                    aplicatreino.adiciona(t);
+//                    aplicatreino.adiciona(t);
                     break;
 
                 case 2:
-                    aplicatreino.mostrarTodos();
+//                    aplicatreino.mostrarTodos();
                     break;
 
                 case 3:

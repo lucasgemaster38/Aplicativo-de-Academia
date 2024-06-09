@@ -4,134 +4,108 @@
  */
 package mvc.control;
 
+import academia.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author lucas
  */
 public class Exercicio_AplicacaoDAO {
-    private Exercicio_Aplicacao ex_aplicacao[] = new Exercicio_Aplicacao[100];
+  
+    public Exercicio_Aplicacao adiciona(Exercicio_Aplicacao aplicacao) {
 
-    public Exercicio_AplicacaoDAO() {
-        Exercicio_Aplicacao e1 = new Exercicio_Aplicacao();
-        e1.setDataCriacao(LocalDate.now());
-        e1.setDescricao("4x12");
-        this.adiciona(e1);
-        
-        Exercicio_Aplicacao e2 = new Exercicio_Aplicacao();
-        e2.setDataCriacao(LocalDate.now());
-        e2.setDescricao("3x10");
-        this.adiciona(e2);
-        
-        Exercicio_Aplicacao e3 = new Exercicio_Aplicacao();
-        e3.setDataCriacao(LocalDate.now());
-        e3.setDescricao("3x8");
-        this.adiciona(e3);
-        
-        Exercicio_Aplicacao e4 = new Exercicio_Aplicacao();
-        e4.setDataCriacao(LocalDate.now());
-        e4.setDescricao("corrida");
-        this.adiciona(e4);
-        
-        Exercicio_Aplicacao e5 = new Exercicio_Aplicacao();
-        e5.setDataCriacao(LocalDate.now());
-        e5.setDescricao("caminhada");
-        this.adiciona(e5);
-        
-    }
-    
-    
-    
-    public boolean adiciona(Exercicio_Aplicacao a) {
-        int proximaPosicaoLivre = this.proximaPosicaoLivre();
-        if (proximaPosicaoLivre != -1) {
-            ex_aplicacao[proximaPosicaoLivre] = a;
-            return true;
-        } else {
-            return false;
+        String sql = "insert into exercicioaplicacao "
+                + "(descricao,dataCriacao,dataModificacao)" + " values (?,?,?)";
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            // seta os valores
+            stmt.setString(1, aplicacao.getDescricao());
+            stmt.setTimestamp(2, java.sql.Timestamp.valueOf(aplicacao.getDataCriacao()));
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(aplicacao.getDataModificacao()));
+
+            stmt.execute();
+
+            System.out.println("Exercicio Aplicação inserido com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
+        //na verdade deveria retornar o elemento que foi inserido agora
+        return aplicacao;
     }
 
-    public boolean ehVazio() {
-        for (Exercicio_Aplicacao exer_ap: ex_aplicacao) {
-            if (exer_ap != null) {
-                return false;
+    public List<Exercicio_Aplicacao> lista(Exercicio_Aplicacao ex) {
+        String sql = "select * from exercicioaplicacao";
+
+        List<Exercicio_Aplicacao> aplicacoes = new ArrayList<>();
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String descricao = rs.getString("descricao");
+                Timestamp currentDateTimeC = rs.getTimestamp("dataCriacao");
+                Timestamp currentDateTimeM = rs.getTimestamp("dataModificacao");
+                
+                LocalDateTime dataEHoraAtualCriacao = currentDateTimeC.toLocalDateTime();
+                LocalDateTime dataEHoraAtualModificacao = currentDateTimeM.toLocalDateTime();
+
+                Exercicio_Aplicacao aplicacao = new Exercicio_Aplicacao();
+
+                aplicacao.setId(id);
+                aplicacao.setDescricao(descricao);
+                aplicacao.setDataModificacao(dataEHoraAtualModificacao);
+                aplicacao.setDataCriacao(dataEHoraAtualCriacao);
+                
+                aplicacoes.add(aplicacao);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return true;
 
+        // itera no ResultSet
+        return aplicacoes;
     }
 
-    public void mostrarTodos() {
-        boolean temExercicioAplicacao = false;
-        for (Exercicio_Aplicacao a : ex_aplicacao) {
-            if (a != null) {
-                System.out.println(a);
-                temExercicioAplicacao = true;
-            }
-        }
-        if (!temExercicioAplicacao) {
-            System.out.println("não existe Exercicio Aplicação cadastrado");
-        }
-    }
+    public Exercicio_Aplicacao exclui(Exercicio_Aplicacao aplicacao) {
+        String sql = "delete from exercicioaplicacao where id = ?";
 
-    public boolean alterar(int id, String novaDescricao) {
-       
-        if(this.buscaPorId(id) != null){
-            ex_aplicacao[id].setDescricao(novaDescricao);
-            ex_aplicacao[id].setDataModificacao(LocalDate.now());
-            System.out.println("Alteracao feita com sucesso");
-            return true;
-        }else{
-            System.out.println("Erro!");
-            return false;
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setLong(1, aplicacao.getId());
+
+            stmt.execute();
+
+            System.out.println("Exercicio aplicacao excluído com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
-    }
-
-    Exercicio_Aplicacao buscaPorNome(String descricao) {
-        for (Exercicio_Aplicacao a : ex_aplicacao) {
-            if (a != null && a.getDescricao().equals(descricao)) {
-                return a;
-            }
-        }
-        return null;
-
+        return aplicacao;
     }
     
-    public Exercicio_Aplicacao buscaPorId(int id) {
-        for (Exercicio_Aplicacao a : ex_aplicacao) {
-            if (a != null && a.getId() == id) {
-                return a;
-            }
+        public Exercicio_Aplicacao altera(Exercicio_Aplicacao aplicacao) {
+        String sql = "update exercicioaplicacao descricao = ?, dataModificacao = ? where id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, aplicacao.getDescricao());
+            stmt.setTimestamp(2, java.sql.Timestamp.valueOf(aplicacao.getDataModificacao()));
+            stmt.setLong(3, aplicacao.getId());
+            
+            stmt.execute();
+            
+            System.out.println("Exercício aplicacao alterado com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return null;
-
-    }
-    
-    
-
-    public boolean remover(int id) {
-      if(this.buscaPorId(id) != null){
-          ex_aplicacao[id] = null;
-          System.out.println("Remoção realizada com sucesso!");
-          return true;
-      }else{
-          System.out.println("Erro.");
-          return false;
-      }
-    }
-
-    private int proximaPosicaoLivre() {
-        for (int i = 0; i < ex_aplicacao.length; i++) {
-            if (ex_aplicacao[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-
+        return aplicacao;
     }
 }
