@@ -4,132 +4,113 @@
  */
 package mvc.control;
 
+import academia.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author lucas
  */
 public class DivisaoTreinoDAO {
-    
-    private DivisaoTreino[] divisoesTreino = new DivisaoTreino[100];
-    
-        public DivisaoTreinoDAO() {
-        DivisaoTreino d1 = new DivisaoTreino();
-        d1.setNome("ABC");
-        d1.setDescricao("Treina 2x e descansa 1x");
-        d1.setDataCriacao(LocalDate.now());
-        this.adiciona(d1);
-        
-        DivisaoTreino d2 = new DivisaoTreino();
-        d2.setNome("ABCD");
-        d2.setDescricao("Treina 3x e descansa 1x");
-        d2.setDataCriacao(LocalDate.now());
-        this.adiciona(d2);
-        
-        DivisaoTreino d3 = new DivisaoTreino();
-        d3.setNome("ABCDE");
-        d3.setDescricao("Treina 4x e descansa 1x");
-        d3.setDataCriacao(LocalDate.now());
-        this.adiciona(d3);
-        
-        DivisaoTreino d4 = new DivisaoTreino();
-        d4.setNome("FULL");
-        d4.setDescricao("Treina todos os dias");
-        d4.setDataCriacao(LocalDate.now());
-        this.adiciona(d4);
-    }
-    
-    public boolean adiciona(DivisaoTreino a) {
-        int proximaPosicaoLivre = this.proximaPosicaoLivre();
-        if (proximaPosicaoLivre != -1) {
-            divisoesTreino[proximaPosicaoLivre] = a;
-            return true;
-        } else {
-            return false;
+ 
+        public DivisaoTreino adiciona(DivisaoTreino divTreino) {
+
+        String sql = "insert into divisaotreino "
+                + "(nome,descricao,dataCriacao,dataModificacao)" + " values (?,?,?,?)";
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            // seta os valores
+            stmt.setString(1, divTreino.getNome());
+            stmt.setString(2, divTreino.getDescricao());
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(divTreino.getDataCriacao()));
+            stmt.setTimestamp(4, java.sql.Timestamp.valueOf(divTreino.getDataModificacao()));
+            
+            stmt.execute();
+
+            System.out.println("Divisão de Treino inserido com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
+        //na verdade deveria retornar o elemento que foi inserido agora
+        return divTreino;
     }
 
-    public boolean ehVazio() {
-        for (DivisaoTreino divis : divisoesTreino) {
-            if (divis != null) {
-                return false;
+    public List<DivisaoTreino> lista(DivisaoTreino dt) {
+        String sql = "select * from divisaotreino";
+
+        List<DivisaoTreino> divisoesTreino = new ArrayList<>();
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String nome = rs.getString("nome");
+                String descricao = rs.getString("descricao");
+                Timestamp currentDateTimeC = rs.getTimestamp("dataCriacao");
+                Timestamp currentDateTimeM = rs.getTimestamp("dataModificacao");
+                
+                LocalDateTime dataEHoraAtualCriacao = currentDateTimeC.toLocalDateTime();
+                LocalDateTime dataEHoraAtualModificacao = currentDateTimeM.toLocalDateTime();
+
+                DivisaoTreino divTreino = new DivisaoTreino();
+
+                divTreino.setId(id);
+                divTreino.setNome(nome);
+                divTreino.setDescricao(descricao);
+                divTreino.setDataModificacao(dataEHoraAtualModificacao);
+                divTreino.setDataCriacao(dataEHoraAtualCriacao);
+                
+                divisoesTreino.add(divTreino);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return true;
 
+        // itera no ResultSet
+        return divisoesTreino;
     }
 
-    public void mostrarTodos() {
-        boolean temDivisaoTreino = false;
-        for (DivisaoTreino d : divisoesTreino) {
-            if (d != null) {
-                System.out.println(d);
-                temDivisaoTreino = true;
-            }
-        }
-        if (!temDivisaoTreino) {
-            System.out.println("não existe divisões de treino cadastradas");
-        }
-    }
+    public DivisaoTreino exclui(DivisaoTreino divTreino) {
+        String sql = "delete from divisaotreino where id = ?";
 
-    public boolean alterar(int id, String novoNome, String novaDescricao) {
-       
-        if(this.buscaPorId(id) != null){
-            divisoesTreino[id].setNome(novoNome);
-            divisoesTreino[id].setDescricao(novaDescricao);
-            divisoesTreino[id].setDataModificacao(LocalDate.now());
-            System.out.println("Alteracao feita com sucesso");
-            return true;
-        }else{
-            System.out.println("Erro!");
-            return false;
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setLong(1, divTreino.getId());
+
+            stmt.execute();
+
+            System.out.println("Divisão de Treino excluída com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
-    }
-
-    DivisaoTreino buscaPorNome(String nome) {
-        for (DivisaoTreino d : divisoesTreino) {
-            if (d != null && d.getNome().equals(nome)) {
-                return d;
-            }
-        }
-        return null;
-
+        return divTreino;
     }
     
-    public DivisaoTreino buscaPorId(int id) {
-        for (DivisaoTreino d : divisoesTreino) {
-            if (d != null && d.getId() == id) {
-                return d;
-            }
+        public DivisaoTreino altera(DivisaoTreino divTreino) {
+        String sql = "update divisaotreino set nome = ?, descricao = ?, dataModificacao = ? where id = ?";
+
+        try (Connection connection = new ConnectionFactory().getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, divTreino.getNome());
+            stmt.setString(2, divTreino.getDescricao());
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(divTreino.getDataModificacao()));
+            stmt.setLong(4, divTreino.getId());
+            
+            stmt.execute();
+            
+            System.out.println("Divisão de Treino alterada com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return null;
-    }
-    
-    
-
-    public boolean remover(int id) {
-      if(this.buscaPorId(id) != null){
-          divisoesTreino[id] = null;
-          System.out.println("Remoção realizada com sucesso!");
-          return true;
-      }else{
-          System.out.println("Erro.");
-          return false;
-      }
-    }
-
-    private int proximaPosicaoLivre() {
-        for (int i = 0; i < divisoesTreino.length; i++) {
-            if (divisoesTreino[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-
+        return divTreino;
     }
     
 }

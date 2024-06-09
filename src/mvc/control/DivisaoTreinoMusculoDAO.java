@@ -19,15 +19,15 @@ public class DivisaoTreinoMusculoDAO {
 
         DivisaoTreinoMusculo a1 = new DivisaoTreinoMusculo();
         a1.setDataCriacao(LocalDate.now());
-        DivisaoTreino a = dtrein.buscaPorNome("ABC");
-        a1.setDivisaoDeTreino(a);
+//        DivisaoTreino a = dtrein.buscaPorNome("ABC");
+//        a1.setDivisaoDeTreino(a);
         a1.setDescricao("A - PEITO, OMBRO, TRICEPS");
         this.adiciona(a1);
 
         DivisaoTreinoMusculo a2 = new DivisaoTreinoMusculo();
         a2.setDataCriacao(LocalDate.now());
-        DivisaoTreino b = dtrein.buscaPorNome("ABCD");
-        a2.setDivisaoDeTreino(b);
+//        DivisaoTreino b = dtrein.buscaPorNome("ABCD");
+//        a2.setDivisaoDeTreino(b);
         a2.setDescricao("B - COSTAS, BICEPS");
         this.adiciona(a2);
     }

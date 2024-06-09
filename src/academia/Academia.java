@@ -429,7 +429,7 @@ public class Academia {
         } while (opcao != 5);
     }
 
-        private void mostrarExerciciosAplicacao() {
+    private void mostrarExerciciosAplicacao() {
         System.out.println("\nEXERCICIOS APLICACAO");
         List<Exercicio_Aplicacao> lista;
         lista = exer_ap.lista(null);
@@ -447,7 +447,7 @@ public class Academia {
 
     private void cadastrarDivisaoDeTreino() {
         int opcao, id;
-
+        DivisaoTreino divTreino;
         do {
             opcao = gui.menuCadastrarDivisaoDeTreino();
 
@@ -458,33 +458,35 @@ public class Academia {
                     div.setNome(scan.nextLine());
                     System.out.println("Informe a descricao do treino: ");
                     div.setDescricao(scan.nextLine());
-                    div.setDataCriacao(LocalDate.now());
+                    div.setDataCriacao(LocalDateTime.now());
+                    div.setDataModificacao(LocalDateTime.now());
                     di_trei.adiciona(div);
                     break;
 
                 case 2:
-                    di_trei.mostrarTodos();
+                    mostrarDivisoesDeTreino();
                     break;
 
                 case 3:
-                    di_trei.mostrarTodos();
+                    mostrarDivisoesDeTreino();
                     System.out.println("Informe o id para remover:");
                     id = Integer.parseInt(scan.nextLine());
-                    di_trei.remover(id);
+                    divTreino = obtemDivisaoDeTreino(id);
+                    di_trei.exclui(divTreino);
                     break;
 
                 case 4:
-                    di_trei.mostrarTodos();
+                    mostrarDivisoesDeTreino();
                     System.out.println("Informe o id que deseja editar:");
                     id = Integer.parseInt(scan.nextLine());
+                    divTreino = obtemDivisaoDeTreino(id);
+                    System.out.println("Informe o novo nome da Divisao de Treino:");
+                    divTreino.setNome(scan.nextLine());
+                    System.out.println("Informe a nova descrição:");
+                    divTreino.setDescricao(scan.nextLine());
+                    divTreino.setDataModificacao(LocalDateTime.now());
+                    di_trei.altera(divTreino);
 
-                    if (di_trei.buscaPorId(id) != null) {
-                        System.out.println("Informe o novo nome da Divisao de Treino:");
-                        String novoNome = scan.nextLine();
-                        System.out.println("Informe a nova descrição:");
-                        String novaDescrição = scan.nextLine();
-                        di_trei.alterar(id, novoNome, novaDescrição);
-                    }
                     break;
                 case 5:
                     System.out.println("Saindo..");
@@ -492,6 +494,22 @@ public class Academia {
             }
 
         } while (opcao != 5);
+    }
+
+    private void mostrarDivisoesDeTreino() {
+        System.out.println("\nDIVISÕES DE TREINO");
+        List<DivisaoTreino> lista;
+        lista = di_trei.lista(null);
+        for (DivisaoTreino divisaoTreino : lista) {
+            System.out.println(divisaoTreino);
+        }
+        System.out.println("\n");
+    }
+
+    private DivisaoTreino obtemDivisaoDeTreino(int id) {
+        DivisaoTreino aplicacao = new DivisaoTreino();
+        aplicacao.setId(id);
+        return aplicacao;
     }
 
     private void cadastrarDivisaoDeTreinoMusculo() {
@@ -504,12 +522,12 @@ public class Academia {
                 case 1:
                     DivisaoTreinoMusculo treinoMusculo = new DivisaoTreinoMusculo();
                     System.out.println("Escolha o id do treino que deseja fazer: ");
-                    di_trei.mostrarTodos();
+//                    di_trei.mostrarTodos();
                     id = Integer.parseInt(scan.nextLine());
-                    if (di_trei.buscaPorId(id) != null) {
-                        DivisaoTreino escolhaUsuario = di_trei.buscaPorId(id);
-                        treinoMusculo.setDivisaoDeTreino(escolhaUsuario);
-                    }
+//                    if (di_trei.buscaPorId(id) != null) {
+//                        DivisaoTreino escolhaUsuario = di_trei.buscaPorId(id);
+//                        treinoMusculo.setDivisaoDeTreino(escolhaUsuario);
+//                    }
 
                     treinoMusculo.setDataCriacao(LocalDate.now());
                     System.out.println("Descreva como será o treino do musculo: ");
@@ -561,51 +579,51 @@ public class Academia {
                     Treino div = new Treino();
                     System.out.println("Informe o objetivo do treino: ");
                     div.setObjetivo(scan.nextLine());
-                    di_trei.mostrarTodos();
+//                    di_trei.mostrarTodos();
                     System.out.println("Escolha uma divisão de treino. Informe o id correspondente:");
                     id = Integer.parseInt(scan.nextLine());
-                    div.setDivisaoDeTreino(di_trei.buscaPorId(id - 1));
+//                    div.setDivisaoDeTreino(di_trei.buscaPorId(id - 1));
                     System.out.println("Informe quando será o início do(s) treino(s). (dd/MM/yyyy)");
                     div.setDatainicio(scan.nextLine());
                     System.out.println("Informe quando será o final do(s) treino(s). (dd/MM/yyyy)");
                     div.setDatatermino(scan.nextLine());
                     div.setDataCriacao(LocalDate.now());
-                    treinoo.adiciona(div);
+//                    treinoo.adiciona(div);
                     break;
 
                 case 2:
-                    treinoo.mostrarTodos();
+//                    treinoo.mostrarTodos();
                     break;
 
                 case 3:
-                    treinoo.mostrarTodos();
+//                    treinoo.mostrarTodos();
                     System.out.println("Informe o id para remover:");
                     id = Integer.parseInt(scan.nextLine());
                     id = id - 1;
-                    treinoo.remover(id);
+//                    treinoo.remover(id);
                     break;
 
                 case 4:
-                    treinoo.mostrarTodos();
-                    System.out.println("Informe o id que deseja editar:");
-                    id = Integer.parseInt(scan.nextLine());
-                    System.out.println(id);
-                    Treino a = treinoo.buscaPorId(id);
-
-                    if (a != null) {
-
-                        System.out.println("Altere o objetivo do treino: ");
-                        String objetivo = scan.nextLine();
-                        di_trei.mostrarTodos();
-                        System.out.println("Altere a divisão de treino. Informe o id correspondente:");
-                        int id2 = Integer.parseInt(scan.nextLine());
-                        DivisaoTreino diTrei = di_trei.buscaPorId(id2);
-                        System.out.println("Informe quando será o novo início do(s) treino(s). (dd/MM/yyyy)");
-                        String dataInicio = scan.nextLine();
-                        System.out.println("Informe quando será o final do(s) treino(s). (dd/MM/yyyy)");
-                        String dataFim = scan.nextLine();
-                        treinoo.alterar(id, objetivo, diTrei, dataInicio, dataFim);
-                    }
+////                    treinoo.mostrarTodos();
+//                    System.out.println("Informe o id que deseja editar:");
+//                    id = Integer.parseInt(scan.nextLine());
+//                    System.out.println(id);
+////                    Treino a = treinoo.buscaPorId(id);
+//
+//                    if (a != null) {
+//
+//                        System.out.println("Altere o objetivo do treino: ");
+//                        String objetivo = scan.nextLine();
+////                        di_trei.mostrarTodos();
+//                        System.out.println("Altere a divisão de treino. Informe o id correspondente:");
+//                        int id2 = Integer.parseInt(scan.nextLine());
+////                        DivisaoTreino diTrei = di_trei.buscaPorId(id2);
+//                        System.out.println("Informe quando será o novo início do(s) treino(s). (dd/MM/yyyy)");
+//                        String dataInicio = scan.nextLine();
+//                        System.out.println("Informe quando será o final do(s) treino(s). (dd/MM/yyyy)");
+//                        String dataFim = scan.nextLine();
+////                        treinoo.alterar(id, objetivo, diTrei, dataInicio, dataFim);
+//                    }
                     break;
                 case 5:
                     System.out.println("Saindo..");
@@ -628,17 +646,17 @@ public class Academia {
                     TreinoAplicacao t = new TreinoAplicacao();
                     t.setDataCriacao(LocalDate.now());
 
-                    di_trei.mostrarTodos();
+//                    di_trei.mostrarTodos();
                     System.out.println("Escolha uma divisão de Treino: ");
                     id = Integer.parseInt(scan.nextLine());
 
-                    DivisaoTreino dt = di_trei.buscaPorId(id);
-                    if (dt != null) {
-                        t.setDivisaoDeTreino(dt);
-                    } else {
-                        System.out.println("Não deu certo");
-                        break;
-                    }
+//                    DivisaoTreino dt = di_trei.buscaPorId(id);
+//                    if (dt != null) {
+//                        t.setDivisaoDeTreino(dt);
+//                    } else {
+//                        System.out.println("Não deu certo");
+//                        break;
+//                    }
                     di_trei_musc.mostraTudo();
                     System.out.println("Escolha um treino de acordo com o músculo: ");
                     id = Integer.parseInt(scan.nextLine());
@@ -661,7 +679,6 @@ public class Academia {
 //                        System.out.println("Não deu certo");
 //                        break;
 //                    }
-
 //                    exer_ap.mostrarTodos();
 //                    System.out.println("Escolha a forma como o execicio será aplicado: ");
 //                    id = Integer.parseInt(scan.nextLine());
@@ -672,17 +689,16 @@ public class Academia {
 //                        System.out.println("Não deu certo");
 //                        break;
 //                    }
-
-                    treinoo.mostrarTodos();
+//                    treinoo.mostrarTodos();
                     System.out.println("Escolha um treino: ");
                     id = Integer.parseInt(scan.nextLine());
-                    Treino tr = treinoo.buscaPorId(id);
-                    if (tr != null) {
-                        t.setTreino(tr);
-                    } else {
-                        System.out.println("Não deu certo");
-                        break;
-                    }
+//                    Treino tr = treinoo.buscaPorId(id);
+//                    if (tr != null) {
+//                        t.setTreino(tr);
+//                    } else {
+//                        System.out.println("Não deu certo");
+//                        break;
+//                    }
 //                    aplicatreino.adiciona(t);
                     break;
 
@@ -691,34 +707,34 @@ public class Academia {
                     break;
 
                 case 3:
-                    treinoo.mostrarTodos();
-                    System.out.println("Informe o id para remover:");
-                    id = Integer.parseInt(scan.nextLine());
-                    id = id - 1;
-                    treinoo.remover(id);
+//                    treinoo.mostrarTodos();
+//                    System.out.println("Informe o id para remover:");
+//                    id = Integer.parseInt(scan.nextLine());
+//                    id = id - 1;
+//                    treinoo.remover(id);
                     break;
 
                 case 4:
-                    treinoo.mostrarTodos();
-                    System.out.println("Informe o id que deseja editar:");
-                    id = Integer.parseInt(scan.nextLine());
-                    System.out.println(id);
-                    Treino a = treinoo.buscaPorId(id);
-
-                    if (a != null) {
-
-                        System.out.println("Altere o objetivo do treino: ");
-                        String objetivo = scan.nextLine();
-                        di_trei.mostrarTodos();
-                        System.out.println("Altere a divisão de treino. Informe o id correspondente:");
-                        int id2 = Integer.parseInt(scan.nextLine());
-                        DivisaoTreino diTrei = di_trei.buscaPorId(id2);
-                        System.out.println("Informe quando será o novo início do(s) treino(s). (dd/MM/yyyy)");
-                        String dataInicio = scan.nextLine();
-                        System.out.println("Informe quando será o final do(s) treino(s). (dd/MM/yyyy)");
-                        String dataFim = scan.nextLine();
-                        treinoo.alterar(id, objetivo, diTrei, dataInicio, dataFim);
-                    }
+//                    treinoo.mostrarTodos();
+//                    System.out.println("Informe o id que deseja editar:");
+//                    id = Integer.parseInt(scan.nextLine());
+//                    System.out.println(id);
+//                    Treino a = treinoo.buscaPorId(id);
+//
+//                    if (a != null) {
+//
+//                        System.out.println("Altere o objetivo do treino: ");
+//                        String objetivo = scan.nextLine();
+////                        di_trei.mostrarTodos();
+//                        System.out.println("Altere a divisão de treino. Informe o id correspondente:");
+//                        int id2 = Integer.parseInt(scan.nextLine());
+////                        DivisaoTreino diTrei = di_trei.buscaPorId(id2);
+//                        System.out.println("Informe quando será o novo início do(s) treino(s). (dd/MM/yyyy)");
+//                        String dataInicio = scan.nextLine();
+//                        System.out.println("Informe quando será o final do(s) treino(s). (dd/MM/yyyy)");
+////                        String dataFim = scan.nextLine();
+////                        treinoo.alterar(id, objetivo, diTrei, dataInicio, dataFim);
+//                    }
                     break;
                 case 5:
                     System.out.println("Saindo..");
