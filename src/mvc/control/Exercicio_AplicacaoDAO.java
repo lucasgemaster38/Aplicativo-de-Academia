@@ -91,7 +91,7 @@ public class Exercicio_AplicacaoDAO {
     }
     
         public Exercicio_Aplicacao altera(Exercicio_Aplicacao aplicacao) {
-        String sql = "update exercicioaplicacao descricao = ?, dataModificacao = ? where id = ?";
+        String sql = "update exercicioaplicacao set descricao = ?, dataModificacao = ? where id = ?";
 
         try (Connection connection = new ConnectionFactory().getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -102,7 +102,7 @@ public class Exercicio_AplicacaoDAO {
             
             stmt.execute();
             
-            System.out.println("Exercício aplicacao alterado com sucesso.");
+            System.out.println("Exercício Aplicação alterado com sucesso.");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
