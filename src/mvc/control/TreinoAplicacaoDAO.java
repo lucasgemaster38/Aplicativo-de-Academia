@@ -25,7 +25,7 @@ public class TreinoAplicacaoDAO {
         ta1.setDataCriacao(LocalDate.now());
         ta1.setDivisaoDeTreino(dt.buscaPorNome("ABC"));
         ta1.setDivisaoDeTreinoMusculo(dtm.buscaPorNome("A - PEITO, OMBRO, TRICEPS"));
-        ta1.setExercício(e.buscaPorNome("supino reto"));
+//        ta1.setExercício(e.buscaPorNome("supino reto"));
         ta1.setExercícioAplicacao(ea.buscaPorNome("4x12"));
         ta1.setTreino(t.buscaPorNome("Perder 25 kilos"));
         this.adiciona(ta1);
@@ -34,7 +34,7 @@ public class TreinoAplicacaoDAO {
         ta2.setDataCriacao(LocalDate.now());
         ta2.setDivisaoDeTreino(dt.buscaPorNome("ABCD"));
         ta2.setDivisaoDeTreinoMusculo(dtm.buscaPorNome("B - COSTAS, BICEPS"));
-        ta2.setExercício(e.buscaPorNome("aeróbico"));
+//        ta2.setExercício(e.buscaPorNome("aeróbico"));
         ta2.setExercícioAplicacao(ea.buscaPorNome("3x10"));
         ta2.setTreino(t.buscaPorNome("Entrar no shape"));
         this.adiciona(ta1);

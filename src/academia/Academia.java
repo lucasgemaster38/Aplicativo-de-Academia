@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import mvc.control.Academia1;
@@ -251,7 +252,7 @@ public class Academia {
                         System.out.println(pessoa);
                     }
                     System.out.println("\n");
-                            
+
                     break;
 
                 case 3:
@@ -270,13 +271,13 @@ public class Academia {
                     System.out.println("Informe o id da pessoa que deseja editar:");
                     id = Integer.parseInt(scan.nextLine());
                     Pessoa pessoaAlterada = obtemPessoa(id);
-                    
+
                     System.out.println("Infome o nome:");
                     pessoaAlterada.setNome(scan.nextLine());
-                    
+
                     System.out.println("Informe o sexo: ");
                     pessoaAlterada.setSexo(scan.nextLine());
-                    
+
                     System.out.println("Informe a data de nascimento: ");
                     pessoaAlterada.setNascimento(LocalDate.parse(scan.nextLine(), dtf));
 
@@ -286,28 +287,26 @@ public class Academia {
                     System.out.println("Informe uma nova senha: ");
                     pessoaAlterada.setSenha(scan.nextLine());
                     pessoaAlterada.setDataModificacao(LocalDateTime.now());
-                    
+
                     System.out.println("\nInforme o tipo do usuario: ");
                     System.out.println("\n1 - administrador");
                     System.out.println("\n2 - Instrutor");
                     System.out.println("\n3 - Usuario");
-                    
+
                     pessoaAlterada.setTipoUsuario(Integer.parseInt(scan.nextLine()));
-                    
-                    
+
                     pesso.altera(pessoaAlterada);
                     System.out.println("Alteração realizada com sucesso");
 
-                        break;
-                    
-            
-            case 5:
+                    break;
+
+                case 5:
                     System.out.println("Saindo..");
                     break;
             }
 
         } while (opcao != 5);
-        }
+    }
 
     private Pessoa obtemPessoa(int id) {
         Pessoa pessoa = new Pessoa();
@@ -317,7 +316,9 @@ public class Academia {
 
     private void cadastrarExercicio() throws IOException, InterruptedException {
         int opcao;
-
+        List<Exercicio> lista;
+        int id;
+        Exercicio exercicio;
         do {
 //            gui.limpar();
             opcao = gui.menuCadastrarExercicio();
@@ -327,34 +328,36 @@ public class Academia {
                     Exercicio e = new Exercicio();
                     System.out.println("Informe o nome do exercicio:");
                     e.setNome(scan.nextLine());
-                    e.setDataCriacao(LocalDate.now());
+                    e.setDataCriacao(LocalDateTime.now());
+                    e.setDataModificacao(LocalDateTime.now());
                     System.out.println("Descreva o exercicio:");
                     e.setDescricao(scan.nextLine());
                     exer.adiciona(e);
                     break;
 
                 case 2:
-                    exer.mostrarTodos();
+                    mostrarExercicios();
                     break;
 
                 case 3:
-                    exer.mostrarTodos();
-                    System.out.println("Informe o nome da exercicio que deseja remover:");
-                    String nome = scan.nextLine();
-                    exer.remover(nome);
+                    mostrarExercicios();
+                    System.out.println("Informe o id do exercicio que deseja remover:");
+                    id = Integer.parseInt(scan.nextLine());
+                    exercicio = obtemExercicio(id);
+                    exer.exclui(exercicio);
                     break;
 
                 case 4:
-                    exer.mostrarTodos();
-                    System.out.println("Informe o nome da exercicio que deseja editar:");
-                    nome = scan.nextLine();
-                    if (exer.buscaPorNome(nome) != null) {
-                        System.out.println("Informe o novo nome:");
-                        String novoNome = scan.nextLine();
-                        System.out.println("Informe a descrição:");
-                        String novaDescrição = scan.nextLine();
-                        exer.alterarNome(nome, novoNome, novaDescrição);
-                    }
+                    mostrarExercicios();
+                    System.out.println("Informe o id do exercicio que deseja editar:");
+                    id = Integer.parseInt(scan.nextLine());
+                    exercicio = obtemExercicio(id);
+                    System.out.println("Informe o novo nome:");
+                    exercicio.setNome(scan.nextLine());
+                    System.out.println("Informe a descrição:");
+                    exercicio.setDescricao(scan.nextLine());
+                    exercicio.setDataModificacao(LocalDateTime.now());
+                    exer.altera(exercicio);
                     break;
                 case 5:
                     System.out.println("Saindo..");
@@ -362,6 +365,20 @@ public class Academia {
             }
 
         } while (opcao != 5);
+    }
+
+    private void mostrarExercicios() {
+        List<Exercicio> lista;
+        lista = exer.lista(null);
+        for (Exercicio exercicio : lista) {
+            System.out.println(exercicio);
+        }
+    }
+
+    private Exercicio obtemExercicio(int id) {
+        Exercicio exercicio = new Exercicio();
+        exercicio.setId(id);
+        return exercicio;
     }
 
     private void cadastrarExercicioAplicacao() {
@@ -615,23 +632,23 @@ public class Academia {
                         break;
                     }
 
-                    exer.mostrarTodos();
-                    System.out.println("Escolha um treino de acordo com o músculo: ");
-                    id = Integer.parseInt(scan.nextLine());
-                    Exercicio e = exer.buscaPorId(id);
-                    if (e != null) {
-//                        t.setExerci�cio(e);
-                    } else {
-                        System.out.println("Não deu certo");
-                        break;
-                    }
+//                    exer.mostrarTodos();
+//                    System.out.println("Escolha um treino de acordo com o músculo: ");
+//                    id = Integer.parseInt(scan.nextLine());3
+//                    Exercicio e = exer.buscaPorId(id);
+//                    if (e != null) {
+////                        t.setExerci�cio(e);
+//                    } else {
+//                        System.out.println("Não deu certo");
+//                        break;
+//                    }
 
                     exer_ap.mostrarTodos();
                     System.out.println("Escolha a forma como o execicio será aplicado: ");
                     id = Integer.parseInt(scan.nextLine());
                     Exercicio_Aplicacao ea = exer_ap.buscaPorId(id);
                     if (ea != null) {
-//                        t.setExerci�cioAplicacao(ea);
+//                        t.setExerci�cioAplicacao(ea);
                     } else {
                         System.out.println("Não deu certo");
                         break;

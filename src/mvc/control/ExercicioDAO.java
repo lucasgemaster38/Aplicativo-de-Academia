@@ -4,124 +4,114 @@
  */
 package mvc.control;
 
+import academia.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author lucas
  */
 public class ExercicioDAO {
-    private Exercicio exercicios[] = new Exercicio[100];
     
-    
-    public ExercicioDAO() {
-        Exercicio a1 = new Exercicio();
-        a1.setDataCriacao(LocalDate.now());
-        a1.setDescricao("barra com pesos");
-        a1.setNome("supino reto");
-        this.adiciona(a1);
-        
-        Exercicio a2 = new Exercicio();
-        a2.setDataCriacao(LocalDate.now());
-        a2.setDescricao("flexão dos joelhos com ou sem peso");
-        a2.setNome("agachamento");
-        this.adiciona(a2);
-        
-        Exercicio a3 = new Exercicio();
-        a3.setDataCriacao(LocalDate.now());
-        a3.setDescricao("caminhada ou corrida na esteira");
-        a3.setNome("aeróbico");
-        this.adiciona(a3);
-        
-    }   
-    
-    public boolean adiciona(Exercicio a) {
-        int proximaPosicaoLivre = this.proximaPosicaoLivre();
-        if (proximaPosicaoLivre != -1) {
-            exercicios[proximaPosicaoLivre] = a;
-            return true;
-        } else {
-            return false;
-        }
+ 
+    public Exercicio adiciona(Exercicio exercicio) {
 
+        String sql = "insert into exercicio "
+                + "(nome,descricao,dataCriacao,dataModificacao)" + " values (?,?,?,?)";
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            // seta os valores
+            stmt.setString(1, exercicio.getNome());
+            stmt.setString(2, exercicio.getDescricao());
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(exercicio.getDataCriacao()));
+            stmt.setTimestamp(4, java.sql.Timestamp.valueOf(exercicio.getDataModificacao()));
+
+            stmt.execute();
+
+            System.out.println("Exercicio inserido com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        //na verdade deveria retornar o elemento que foi inserido agora
+        return exercicio;
     }
 
-    public boolean ehVazio() {
-        for (Exercicio exer : exercicios) {
-            if (exer != null) {
-                return false;
-            }
-        }
-        return true;
+    public List<Exercicio> lista(Exercicio ex) {
+        String sql = "select * from exercicio";
 
+        List<Exercicio> exercicios = new ArrayList<>();
+
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String nome = rs.getString("nome");
+                String descricao = rs.getString("descricao");
+                Timestamp currentDateTimeC = rs.getTimestamp("dataCriacao");
+                Timestamp currentDateTimeM = rs.getTimestamp("dataModificacao");
+                
+                LocalDateTime dataEHoraAtualCriacao = currentDateTimeC.toLocalDateTime();
+                LocalDateTime dataEHoraAtualModificacao = currentDateTimeM.toLocalDateTime();
+
+                Exercicio exercicio = new Exercicio();
+
+                exercicio.setId(id);
+                exercicio.setDescricao(descricao);
+                exercicio.setDataModificacao(dataEHoraAtualModificacao);
+                exercicio.setDataCriacao(dataEHoraAtualCriacao);
+                
+                exercicios.add(exercicio);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // itera no ResultSet
+        return exercicios;
     }
 
-    public void mostrarTodos() {
-        boolean temExercicio = false;
-        for (Exercicio a : exercicios) {
-            if (a != null) {
-                System.out.println(a);
-                temExercicio = true;
-            }
-        }
-        if (!temExercicio) {
-            System.out.println("não existe Exercicio cadastrado");
-        }
-    }
+    public Exercicio exclui(Exercicio exercicio) {
+        String sql = "delete from exercicio where id = ?";
 
-    public boolean alterarNome(String nome, String novoNome, String novaDescricao) {
-        for (Exercicio exer : exercicios) {
-            if (exer != null && exer.getNome().equals(nome)) {
-                exer.setNome(novoNome);
-                exer.setDescricao(novaDescricao);
-                return true;
-            }
+        try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setLong(1, exercicio.getId());
+
+            stmt.execute();
+
+            System.out.println("Exercicio excluído com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return false;
-
-    }
-
-    public Exercicio buscaPorNome(String nome) {
-        for (Exercicio a : exercicios) {
-            if (a != null && a.getNome().equals(nome)) {
-                return a;
-            }
-        }
-        return null;
-
+        return exercicio;
     }
     
-    public Exercicio buscaPorId(long id) {
-        for (Exercicio a : exercicios) {
-            if (a != null && a.getId() == id) {
-                return a;
-            }
-        }
-        return null;
+        public Exercicio altera(Exercicio exercicio) {
+        String sql = "update exercicio set nome = ?, descricao = ?, dataModificacao = ? where id = ?";
 
+        try (Connection connection = new ConnectionFactory().getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, exercicio.getNome());
+            stmt.setString(2, exercicio.getDescricao());
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(exercicio.getDataCriacao()));
+            stmt.setLong(4, exercicio.getId());
+            
+            stmt.execute();
+            
+            System.out.println("Exercício alterado com sucesso.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return exercicio;
     }
     
-    
-
-    public boolean remover(String nome) {
-        for (int i = 0; i < exercicios.length; i++) {
-            if (exercicios[i] != null && exercicios[i].getNome().equals(nome)) {
-                exercicios[i] = null;
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    private int proximaPosicaoLivre() {
-        for (int i = 0; i < exercicios.length; i++) {
-            if (exercicios[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-
-    }
 }
