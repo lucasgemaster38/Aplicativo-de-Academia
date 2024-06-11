@@ -6,6 +6,7 @@ package mvc.control;
 
 import academia.ConnectionFactory;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,13 +25,14 @@ public class DivisaoTreinoDAO {
         public DivisaoTreino adiciona(DivisaoTreino divTreino) {
 
         String sql = "insert into divisaotreino "
-                + "(nome,descricao,dataCriacao,dataModificacao)" + " values (?,?,?,?)";
+                + "(nome,descricao,quantidade,dataCriacao,dataModificacao)" + " values (?,?,?,?,?)";
         try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
             // seta os valores
             stmt.setString(1, divTreino.getNome());
             stmt.setString(2, divTreino.getDescricao());
-            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(divTreino.getDataCriacao()));
-            stmt.setTimestamp(4, java.sql.Timestamp.valueOf(divTreino.getDataModificacao()));
+            stmt.setInt(3, divTreino.getQuantidade());
+            stmt.setTimestamp(4, java.sql.Timestamp.valueOf(divTreino.getDataCriacao()));
+            stmt.setTimestamp(5, java.sql.Timestamp.valueOf(divTreino.getDataModificacao()));
             
             stmt.execute();
 
@@ -53,6 +55,7 @@ public class DivisaoTreinoDAO {
                 Long id = rs.getLong("id");
                 String nome = rs.getString("nome");
                 String descricao = rs.getString("descricao");
+                int quantidade = rs.getInt("quantidade");
                 Timestamp currentDateTimeC = rs.getTimestamp("dataCriacao");
                 Timestamp currentDateTimeM = rs.getTimestamp("dataModificacao");
                 
@@ -64,6 +67,7 @@ public class DivisaoTreinoDAO {
                 divTreino.setId(id);
                 divTreino.setNome(nome);
                 divTreino.setDescricao(descricao);
+                divTreino.setQuantidade(quantidade);
                 divTreino.setDataModificacao(dataEHoraAtualModificacao);
                 divTreino.setDataCriacao(dataEHoraAtualCriacao);
                 
@@ -94,15 +98,16 @@ public class DivisaoTreinoDAO {
     }
     
         public DivisaoTreino altera(DivisaoTreino divTreino) {
-        String sql = "update divisaotreino set nome = ?, descricao = ?, dataModificacao = ? where id = ?";
+        String sql = "update divisaotreino set nome = ?, descricao = ?, quantidade = ?, dataModificacao = ? where id = ?";
 
         try (Connection connection = new ConnectionFactory().getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, divTreino.getNome());
             stmt.setString(2, divTreino.getDescricao());
-            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(divTreino.getDataModificacao()));
-            stmt.setLong(4, divTreino.getId());
+            stmt.setInt(3, divTreino.getQuantidade());
+            stmt.setTimestamp(4, java.sql.Timestamp.valueOf(divTreino.getDataModificacao()));
+            stmt.setLong(5, divTreino.getId());
             
             stmt.execute();
             
@@ -111,6 +116,46 @@ public class DivisaoTreinoDAO {
             throw new RuntimeException(e);
         }
         return divTreino;
+    }
+        
+    public DivisaoTreino buscaPorId(long code) {
+        try (Connection connection = new ConnectionFactory().getConnection();
+            PreparedStatement ps = createPreparedStatement(connection, code);
+            ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String nome = rs.getString("nome");
+                String descricao = rs.getString("descricao");
+                int quantidade = rs.getInt("quantidade");
+                Timestamp currentDateTimeC = rs.getTimestamp("dataCriacao");
+                Timestamp currentDateTimeM = rs.getTimestamp("dataModificacao");
+                
+                LocalDateTime dataEHoraAtualCriacao = currentDateTimeC.toLocalDateTime();
+                LocalDateTime dataEHoraAtualModificacao = currentDateTimeM.toLocalDateTime();
+                
+                DivisaoTreino divTreino = new DivisaoTreino();
+                
+                divTreino.setId(id);
+                divTreino.setNome(nome);
+                divTreino.setDescricao(descricao);
+                divTreino.setQuantidade(quantidade);
+                divTreino.setDataModificacao(dataEHoraAtualModificacao);
+                divTreino.setDataCriacao(dataEHoraAtualCriacao);
+                
+                return divTreino;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+    
+    private PreparedStatement createPreparedStatement(Connection con, long id) throws SQLException {
+        String sql = "select * from divisaotreino where id = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setLong(1, id);
+        return ps;
     }
     
 }

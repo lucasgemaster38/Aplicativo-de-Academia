@@ -448,6 +448,8 @@ public class Academia {
     private void cadastrarDivisaoDeTreino() {
         int opcao, id;
         DivisaoTreino divTreino;
+        int quantidade = 1;
+
         do {
             opcao = gui.menuCadastrarDivisaoDeTreino();
 
@@ -456,6 +458,19 @@ public class Academia {
                     DivisaoTreino div = new DivisaoTreino();
                     System.out.println("Informe uma divisao de treino: ");
                     div.setNome(scan.nextLine());
+
+                    do {
+                        //essa parte do código limita o usuário a digitar numeros
+                        //maiores que 7 ou menores que zero. Afinal, a semana tem somente
+                        //7 dias. Comumente, não há treinos que durem mais de 1 semana.
+                        System.out.println("Informe a quantidade de dias desse treino");
+                        quantidade = Integer.parseInt(scan.nextLine());
+                        if (quantidade > 7 || quantidade < 1) {
+                            System.out.println("\nA quantidade de dias deve durar até 7.\n");
+                        }
+                    } while (quantidade > 7);
+
+                    div.setQuantidade(quantidade);
                     System.out.println("Informe a descricao do treino: ");
                     div.setDescricao(scan.nextLine());
                     div.setDataCriacao(LocalDateTime.now());
@@ -482,6 +497,8 @@ public class Academia {
                     divTreino = obtemDivisaoDeTreino(id);
                     System.out.println("Informe o novo nome da Divisao de Treino:");
                     divTreino.setNome(scan.nextLine());
+                    System.out.println("Informe a quantidade de dias desse treino");
+                    divTreino.setQuantidade(Integer.parseInt(scan.nextLine()));
                     System.out.println("Informe a nova descrição:");
                     divTreino.setDescricao(scan.nextLine());
                     divTreino.setDataModificacao(LocalDateTime.now());
@@ -514,36 +531,45 @@ public class Academia {
 
     private void cadastrarDivisaoDeTreinoMusculo() {
         int opcao, id;
-
+        DivisaoTreino divTreino;
         do {
             opcao = gui.menuCadastrarDivisaoDeTreinoMusculo();
 
             switch (opcao) {
                 case 1:
-                    DivisaoTreinoMusculo treinoMusculo = new DivisaoTreinoMusculo();
+                    mostrarDivisoesDeTreino();
                     System.out.println("Escolha o id do treino que deseja fazer: ");
-//                    di_trei.mostrarTodos();
                     id = Integer.parseInt(scan.nextLine());
-//                    if (di_trei.buscaPorId(id) != null) {
-//                        DivisaoTreino escolhaUsuario = di_trei.buscaPorId(id);
-//                        treinoMusculo.setDivisaoDeTreino(escolhaUsuario);
-//                    }
+                    divTreino = di_trei.buscaPorId(id);
+                    
+                    if (di_trei.buscaPorId(id) != null) {
+                        int quantidade = 0;
+                        while (quantidade < divTreino.getQuantidade()) {
+                            DivisaoTreinoMusculo treinoMusculo = new DivisaoTreinoMusculo();
+                            treinoMusculo.setDivisaoDeTreino(divTreino);
+                            treinoMusculo.setDataCriacao(LocalDateTime.now());
+                            treinoMusculo.setDataModificacao(LocalDateTime.now());
+                            System.out.println((quantidade + 1) + "Descrição do treino de musculo: ");
+                            treinoMusculo.setDescricao(scan.nextLine());
+                            di_trei_musc.adiciona(treinoMusculo);
+                            quantidade++;
+                        }
+                    } else {
+                        System.out.println("\nEsse treino não existe.\n");
+                    }
 
-                    treinoMusculo.setDataCriacao(LocalDate.now());
-                    System.out.println("Descreva como será o treino do musculo: ");
-                    treinoMusculo.setDescricao(scan.nextLine());
-                    di_trei_musc.adiciona(treinoMusculo);
                     break;
 
                 case 2:
-                    di_trei_musc.mostraTudo();
+
                     break;
 
                 case 3:
-                    di_trei_musc.mostraTudo();
-                    System.out.println("Escolha um ID para remover:");
-                    id = Integer.parseInt(scan.nextLine());
-                    di_trei_musc.remover(id);
+
+//                    System.out.println("Escolha um ID para remover:");
+//                    id = Integer.parseInt(scan.nextLine());
+//                    divTreino = obtemDivisaoDeTreino(id);
+//                    di_trei_musc.exclui();
                     break;
                 case 4:
 //                    di_trei_musc.mostrarTodos();
@@ -564,6 +590,20 @@ public class Academia {
             }
 
         } while (opcao != 5);
+    }
+
+    private void mostrarDivisoesDeTreinoMusculo() {
+        System.out.println("\nDIVISÕES DE TREINO MUSCULO");
+        List<DivisaoTreinoMusculo> lista;
+        lista = di_trei_musc.lista(null);
+
+        System.out.println("\n");
+    }
+
+    private DivisaoTreinoMusculo obtemDivisaoDeTreinoMusculo(int id) {
+        DivisaoTreinoMusculo aplicacao = new DivisaoTreinoMusculo();
+        aplicacao.setId(id);
+        return aplicacao;
     }
 
     private void cadastrarTreino() {
@@ -657,17 +697,17 @@ public class Academia {
 //                        System.out.println("Não deu certo");
 //                        break;
 //                    }
-                    di_trei_musc.mostraTudo();
-                    System.out.println("Escolha um treino de acordo com o músculo: ");
-                    id = Integer.parseInt(scan.nextLine());
-                    DivisaoTreinoMusculo dtm = di_trei_musc.buscaPorId(id);
-
-                    if (dtm != null) {
-                        t.setDivisaoDeTreinoMusculo(dtm);
-                    } else {
-                        System.out.println("Não deu certo");
-                        break;
-                    }
+//                    di_trei_musc.mostraTudo();
+//                    System.out.println("Escolha um treino de acordo com o músculo: ");
+//                    id = Integer.parseInt(scan.nextLine());
+//                    DivisaoTreinoMusculo dtm = di_trei_musc.buscaPorId(id);
+//
+//                    if (dtm != null) {
+//                        t.setDivisaoDeTreinoMusculo(dtm);
+//                    } else {
+//                        System.out.println("Não deu certo");
+//                        break;
+//                    }
 
 //                    exer.mostrarTodos();
 //                    System.out.println("Escolha um treino de acordo com o músculo: ");

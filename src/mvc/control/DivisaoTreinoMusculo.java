@@ -5,32 +5,22 @@
 package mvc.control;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author lucas
  */
 public class DivisaoTreinoMusculo {
-    private static long serial;
+
     private long id;
-    private LocalDate dataCriacao;
-    private LocalDate dataModificacao;
     private DivisaoTreino divisaoDeTreino;
     private String descricao;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataModificacao;
     
-    public DivisaoTreinoMusculo() {
     
-        id = ++DivisaoTreinoMusculo.serial;
-    }
-
-    public static long getSerial() {
-        return serial;
-    }
-
-    public static void setSerial(long serial) {
-        DivisaoTreinoMusculo.serial = serial;
-    }
-
+    
     public long getId() {
         return id;
     }
@@ -48,19 +38,19 @@ public class DivisaoTreinoMusculo {
         this.divisaoDeTreino = divisaoDeTreino;
     }
 
-    public LocalDate getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDate dataCriacao) {
+    public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
-    public LocalDate getDataModificacao() {
+    public LocalDateTime getDataModificacao() {
         return dataModificacao;
     }
 
-    public void setDataModificacao(LocalDate dataModificacao) {
+    public void setDataModificacao(LocalDateTime dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
 
@@ -74,7 +64,7 @@ public class DivisaoTreinoMusculo {
 
     @Override
     public String toString() {
-        return "DivisaoTreinoMusculo{" + "divisaoDeTreino=" + divisaoDeTreino + ", descricao=" + descricao + '}';
+        return "ID = " + id + ", Divisao De Treino = " + divisaoDeTreino + ", descricao = " + descricao + '}';
     }
   
 }

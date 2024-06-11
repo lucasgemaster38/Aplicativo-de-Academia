@@ -16,6 +16,7 @@ public class DivisaoTreino {
     private long id;
     private String nome;
     private String descricao;
+    private int quantidade;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
     
@@ -43,6 +44,16 @@ public class DivisaoTreino {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+    
+    
 
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
