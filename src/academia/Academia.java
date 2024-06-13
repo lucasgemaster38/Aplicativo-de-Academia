@@ -565,11 +565,12 @@ public class Academia {
                     break;
 
                 case 3:
-
-//                    System.out.println("Escolha um ID para remover:");
-//                    id = Integer.parseInt(scan.nextLine());
-//                    divTreino = obtemDivisaoDeTreino(id);
-//                    di_trei_musc.exclui();
+                    mostrarDivisoesDeTreinoMusculo();
+                    System.out.println("\nEscolha o id do treino: \n");
+                    id = Integer.parseInt(scan.nextLine());
+                    DivisaoTreinoMusculo d = obtemDivisaoDeTreinoMusculo(id);
+                    di_trei_musc.exclui(d);
+                    
                     break;
                 case 4:
 //                    di_trei_musc.mostrarTodos();
@@ -600,7 +601,8 @@ public class Academia {
         for (DivisaoTreinoMusculo divisaoTreinoMusculo : lista) {
             
             if(divisaoTreinoMusculo.getDivisaoDeTreino().getId() != d){
-                System.out.println("\nTreino: " + divisaoTreinoMusculo.getDivisaoDeTreino().getNome() + ": ");
+                System.out.println("\nID: "+ divisaoTreinoMusculo.getDivisaoDeTreino().getId() +" Treino " + 
+                        divisaoTreinoMusculo.getDivisaoDeTreino().getNome() + ": ");
                 d = divisaoTreinoMusculo.getDivisaoDeTreino().getId();
             }
             System.out.println(divisaoTreinoMusculo);

@@ -80,8 +80,8 @@ public class DivisaoTreinoMusculoDAO {
         return aplicacoes;
     }
 
-    public Exercicio_Aplicacao exclui(Exercicio_Aplicacao aplicacao) {
-        String sql = "delete from exercicioaplicacao where id = ?";
+    public DivisaoTreinoMusculo exclui(DivisaoTreinoMusculo aplicacao) {
+        String sql = "delete from divisaotreinomusculo where divisaoTreino = ?";
 
         try (Connection connection = new ConnectionFactory().getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -89,7 +89,7 @@ public class DivisaoTreinoMusculoDAO {
 
             stmt.execute();
 
-            System.out.println("Exercicio aplicacao excluÃ­do com sucesso.");
+            System.out.println("Divisão Treino Musculo excluí­do com sucesso.");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
