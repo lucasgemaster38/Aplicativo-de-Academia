@@ -64,7 +64,7 @@ public class DivisaoTreinoMusculo {
 
     @Override
     public String toString() {
-        return "ID = " + id + ", Divisao De Treino = " + divisaoDeTreino + ", descricao = " + descricao + '}';
+        return "ID = " + id  + ", descricao = " + descricao + '}';
     }
   
 }

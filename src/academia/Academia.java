@@ -115,7 +115,7 @@ public class Academia {
 //            return logada;
 //
 //        } else {
-//            System.out.println("Login Inv√°lido. Tente novamente");
+//            System.out.println("Login Inv·lido. Tente novamente");
 //            return null;
 //        }
 //
@@ -169,7 +169,7 @@ public class Academia {
                     id = Integer.parseInt(scan.nextLine());
                     academia = obtemAcademia(id);
                     academ.exclui(academia);
-                    System.out.println("Academia exclu√≠da com sucesso");
+                    System.out.println("Academia excluÌda com sucesso");
                     break;
 
                 case 4:
@@ -264,7 +264,7 @@ public class Academia {
                     id = Integer.parseInt(scan.nextLine());
                     Pessoa pessoa = obtemPessoa(id);
                     pesso.exclui(pessoa);
-                    System.out.println("Pessoa exclu√≠da com sucesso");
+                    System.out.println("Pessoa excluÌda com sucesso");
 
                     break;
                 case 4:
@@ -296,7 +296,7 @@ public class Academia {
                     pessoaAlterada.setTipoUsuario(Integer.parseInt(scan.nextLine()));
 
                     pesso.altera(pessoaAlterada);
-                    System.out.println("Altera√ß√£o realizada com sucesso");
+                    System.out.println("AlteraÁ„o realizada com sucesso");
 
                     break;
 
@@ -354,7 +354,7 @@ public class Academia {
                     exercicio = obtemExercicio(id);
                     System.out.println("Informe o novo nome:");
                     exercicio.setNome(scan.nextLine());
-                    System.out.println("Informe a descri√ß√£o:");
+                    System.out.println("Informe a descriÁ„o:");
                     exercicio.setDescricao(scan.nextLine());
                     exercicio.setDataModificacao(LocalDateTime.now());
                     exer.altera(exercicio);
@@ -392,7 +392,7 @@ public class Academia {
             switch (opcao) {
                 case 1:
                     Exercicio_Aplicacao e_ap = new Exercicio_Aplicacao();
-                    System.out.println("Informe a aplica√ß√£o dos exercicios");
+                    System.out.println("Informe a aplicaÁ„o dos exercicios");
                     e_ap.setDescricao(scan.nextLine());
                     e_ap.setDataCriacao(LocalDateTime.now());
                     e_ap.setDataModificacao(LocalDateTime.now());
@@ -405,7 +405,7 @@ public class Academia {
 
                 case 3:
                     mostrarExerciciosAplicacao();
-                    System.out.println("Informe o id do exercicio aplica√ß√£o que deseja remover:");
+                    System.out.println("Informe o id do exercicio aplicaÁ„o que deseja remover:");
                     id = Integer.parseInt(scan.nextLine());
                     aplicacao = obtemExercicioAplicacao(id);
                     exer_ap.exclui(aplicacao);
@@ -416,7 +416,7 @@ public class Academia {
                     System.out.println("Informe o id do exercicio que deseja editar:");
                     id = Integer.parseInt(scan.nextLine());
                     aplicacao = obtemExercicioAplicacao(id);
-                    System.out.println("Informe a descri√ß√£o:");
+                    System.out.println("Informe a descriÁ„o:");
                     aplicacao.setDescricao(scan.nextLine());
                     aplicacao.setDataModificacao(LocalDateTime.now());
                     exer_ap.altera(aplicacao);
@@ -460,13 +460,13 @@ public class Academia {
                     div.setNome(scan.nextLine());
 
                     do {
-                        //essa parte do c√≥digo limita o usu√°rio a digitar numeros
+                        //essa parte do cÛdigo limita o usu·rio a digitar numeros
                         //maiores que 7 ou menores que zero. Afinal, a semana tem somente
-                        //7 dias. Comumente, n√£o h√° treinos que durem mais de 1 semana.
+                        //7 dias. Comumente, n„o h· treinos que durem mais de 1 semana.
                         System.out.println("Informe a quantidade de dias desse treino");
                         quantidade = Integer.parseInt(scan.nextLine());
                         if (quantidade > 7 || quantidade < 1) {
-                            System.out.println("\nA quantidade de dias deve durar at√© 7.\n");
+                            System.out.println("\nA quantidade de dias deve durar atÈ 7.\n");
                         }
                     } while (quantidade > 7);
 
@@ -499,7 +499,7 @@ public class Academia {
                     divTreino.setNome(scan.nextLine());
                     System.out.println("Informe a quantidade de dias desse treino");
                     divTreino.setQuantidade(Integer.parseInt(scan.nextLine()));
-                    System.out.println("Informe a nova descri√ß√£o:");
+                    System.out.println("Informe a nova descriÁ„o:");
                     divTreino.setDescricao(scan.nextLine());
                     divTreino.setDataModificacao(LocalDateTime.now());
                     di_trei.altera(divTreino);
@@ -514,7 +514,7 @@ public class Academia {
     }
 
     private void mostrarDivisoesDeTreino() {
-        System.out.println("\nDIVIS√ïES DE TREINO");
+        System.out.println("\nDIVIS’ES DE TREINO");
         List<DivisaoTreino> lista;
         lista = di_trei.lista(null);
         for (DivisaoTreino divisaoTreino : lista) {
@@ -538,7 +538,7 @@ public class Academia {
             switch (opcao) {
                 case 1:
                     mostrarDivisoesDeTreino();
-                    System.out.println("Escolha o id do treino que deseja fazer: ");
+                    System.out.println("\nEscolha o id do treino que deseja fazer: \n");
                     id = Integer.parseInt(scan.nextLine());
                     divTreino = di_trei.buscaPorId(id);
                     
@@ -549,19 +549,19 @@ public class Academia {
                             treinoMusculo.setDivisaoDeTreino(divTreino);
                             treinoMusculo.setDataCriacao(LocalDateTime.now());
                             treinoMusculo.setDataModificacao(LocalDateTime.now());
-                            System.out.println((quantidade + 1) + "Descri√ß√£o do treino de musculo: ");
+                            System.out.println((quantidade + 1) + " - DescriÁ„o do treino de musculo: ");
                             treinoMusculo.setDescricao(scan.nextLine());
                             di_trei_musc.adiciona(treinoMusculo);
                             quantidade++;
                         }
                     } else {
-                        System.out.println("\nEsse treino n√£o existe.\n");
+                        System.out.println("\nEsse treino n„o existe.\n");
                     }
 
                     break;
 
                 case 2:
-
+                       mostrarDivisoesDeTreinoMusculo();
                     break;
 
                 case 3:
@@ -579,9 +579,9 @@ public class Academia {
 //                    if (di_trei_musc.buscaPorId(id) != null) {
 //                        System.out.println("Informe o novo nome da Divisao de Treino:");
 //                        String novoNome = scan.nextLine();
-//                        System.out.println("Informe a nova descri√ß√£o:");
-//                        String novaDescri√ß√£o = scan.nextLine();
-//                        di_trei_musc.alterar(id, novoNome, novaDescri√ß√£o);
+//                        System.out.println("Informe a nova descriÁ„o:");
+//                        String novaDescriÁ„o = scan.nextLine();
+//                        di_trei_musc.alterar(id, novoNome, novaDescriÁ„o);
 //                    }
                     break;
                 case 5:
@@ -593,11 +593,18 @@ public class Academia {
     }
 
     private void mostrarDivisoesDeTreinoMusculo() {
-        System.out.println("\nDIVIS√ïES DE TREINO MUSCULO");
+        System.out.println("\nDIVIS’ES DE TREINO MUSCULO: ");
         List<DivisaoTreinoMusculo> lista;
         lista = di_trei_musc.lista(null);
-
-        System.out.println("\n");
+        long d = -1;
+        for (DivisaoTreinoMusculo divisaoTreinoMusculo : lista) {
+            
+            if(divisaoTreinoMusculo.getDivisaoDeTreino().getId() != d){
+                System.out.println("\nTreino: " + divisaoTreinoMusculo.getDivisaoDeTreino().getNome() + ": ");
+                d = divisaoTreinoMusculo.getDivisaoDeTreino().getId();
+            }
+            System.out.println(divisaoTreinoMusculo);
+        }
     }
 
     private DivisaoTreinoMusculo obtemDivisaoDeTreinoMusculo(int id) {
@@ -620,12 +627,12 @@ public class Academia {
                     System.out.println("Informe o objetivo do treino: ");
                     div.setObjetivo(scan.nextLine());
 //                    di_trei.mostrarTodos();
-                    System.out.println("Escolha uma divis√£o de treino. Informe o id correspondente:");
+                    System.out.println("Escolha uma divis„o de treino. Informe o id correspondente:");
                     id = Integer.parseInt(scan.nextLine());
 //                    div.setDivisaoDeTreino(di_trei.buscaPorId(id - 1));
-                    System.out.println("Informe quando ser√° o in√≠cio do(s) treino(s). (dd/MM/yyyy)");
+                    System.out.println("Informe quando ser· o inÌcio do(s) treino(s). (dd/MM/yyyy)");
                     div.setDatainicio(scan.nextLine());
-                    System.out.println("Informe quando ser√° o final do(s) treino(s). (dd/MM/yyyy)");
+                    System.out.println("Informe quando ser· o final do(s) treino(s). (dd/MM/yyyy)");
                     div.setDatatermino(scan.nextLine());
                     div.setDataCriacao(LocalDate.now());
 //                    treinoo.adiciona(div);
@@ -655,12 +662,12 @@ public class Academia {
 //                        System.out.println("Altere o objetivo do treino: ");
 //                        String objetivo = scan.nextLine();
 ////                        di_trei.mostrarTodos();
-//                        System.out.println("Altere a divis√£o de treino. Informe o id correspondente:");
+//                        System.out.println("Altere a divis„o de treino. Informe o id correspondente:");
 //                        int id2 = Integer.parseInt(scan.nextLine());
 ////                        DivisaoTreino diTrei = di_trei.buscaPorId(id2);
-//                        System.out.println("Informe quando ser√° o novo in√≠cio do(s) treino(s). (dd/MM/yyyy)");
+//                        System.out.println("Informe quando ser· o novo inÌcio do(s) treino(s). (dd/MM/yyyy)");
 //                        String dataInicio = scan.nextLine();
-//                        System.out.println("Informe quando ser√° o final do(s) treino(s). (dd/MM/yyyy)");
+//                        System.out.println("Informe quando ser· o final do(s) treino(s). (dd/MM/yyyy)");
 //                        String dataFim = scan.nextLine();
 ////                        treinoo.alterar(id, objetivo, diTrei, dataInicio, dataFim);
 //                    }
@@ -687,46 +694,46 @@ public class Academia {
                     t.setDataCriacao(LocalDate.now());
 
 //                    di_trei.mostrarTodos();
-                    System.out.println("Escolha uma divis√£o de Treino: ");
+                    System.out.println("Escolha uma divis„o de Treino: ");
                     id = Integer.parseInt(scan.nextLine());
 
 //                    DivisaoTreino dt = di_trei.buscaPorId(id);
 //                    if (dt != null) {
 //                        t.setDivisaoDeTreino(dt);
 //                    } else {
-//                        System.out.println("N√£o deu certo");
+//                        System.out.println("N„o deu certo");
 //                        break;
 //                    }
 //                    di_trei_musc.mostraTudo();
-//                    System.out.println("Escolha um treino de acordo com o m√∫sculo: ");
+//                    System.out.println("Escolha um treino de acordo com o m˙sculo: ");
 //                    id = Integer.parseInt(scan.nextLine());
 //                    DivisaoTreinoMusculo dtm = di_trei_musc.buscaPorId(id);
 //
 //                    if (dtm != null) {
 //                        t.setDivisaoDeTreinoMusculo(dtm);
 //                    } else {
-//                        System.out.println("N√£o deu certo");
+//                        System.out.println("N„o deu certo");
 //                        break;
 //                    }
 
 //                    exer.mostrarTodos();
-//                    System.out.println("Escolha um treino de acordo com o m√∫sculo: ");
+//                    System.out.println("Escolha um treino de acordo com o m˙sculo: ");
 //                    id = Integer.parseInt(scan.nextLine());3
 //                    Exercicio e = exer.buscaPorId(id);
 //                    if (e != null) {
-////                        t.setExerciÔøΩcio(e);
+////                        t.setExerci?cio(e);
 //                    } else {
-//                        System.out.println("N√£o deu certo");
+//                        System.out.println("N„o deu certo");
 //                        break;
 //                    }
 //                    exer_ap.mostrarTodos();
-//                    System.out.println("Escolha a forma como o execicio ser√° aplicado: ");
+//                    System.out.println("Escolha a forma como o execicio ser· aplicado: ");
 //                    id = Integer.parseInt(scan.nextLine());
 //                    Exercicio_Aplicacao ea = exer_ap.buscaPorId(id);
 //                    if (ea != null) {
-////                        t.setExerciÔøΩcioAplicacao(ea);
+////                        t.setExerci?cioAplicacao(ea);
 //                    } else {
-//                        System.out.println("N√£o deu certo");
+//                        System.out.println("N„o deu certo");
 //                        break;
 //                    }
 //                    treinoo.mostrarTodos();
@@ -736,7 +743,7 @@ public class Academia {
 //                    if (tr != null) {
 //                        t.setTreino(tr);
 //                    } else {
-//                        System.out.println("N√£o deu certo");
+//                        System.out.println("N„o deu certo");
 //                        break;
 //                    }
 //                    aplicatreino.adiciona(t);
@@ -766,12 +773,12 @@ public class Academia {
 //                        System.out.println("Altere o objetivo do treino: ");
 //                        String objetivo = scan.nextLine();
 ////                        di_trei.mostrarTodos();
-//                        System.out.println("Altere a divis√£o de treino. Informe o id correspondente:");
+//                        System.out.println("Altere a divis„o de treino. Informe o id correspondente:");
 //                        int id2 = Integer.parseInt(scan.nextLine());
 ////                        DivisaoTreino diTrei = di_trei.buscaPorId(id2);
-//                        System.out.println("Informe quando ser√° o novo in√≠cio do(s) treino(s). (dd/MM/yyyy)");
+//                        System.out.println("Informe quando ser· o novo inÌcio do(s) treino(s). (dd/MM/yyyy)");
 //                        String dataInicio = scan.nextLine();
-//                        System.out.println("Informe quando ser√° o final do(s) treino(s). (dd/MM/yyyy)");
+//                        System.out.println("Informe quando ser· o final do(s) treino(s). (dd/MM/yyyy)");
 ////                        String dataFim = scan.nextLine();
 ////                        treinoo.alterar(id, objetivo, diTrei, dataInicio, dataFim);
 //                    }
@@ -783,5 +790,6 @@ public class Academia {
 
         } while (opcao != 5);
     }
+
 
 }

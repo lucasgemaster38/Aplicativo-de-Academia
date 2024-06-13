@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package mvc.control;
-
+import mvc.control.DivisaoTreinoDAO;
 import academia.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +20,9 @@ import java.util.List;
  * @author lucas
  */
 public class DivisaoTreinoMusculoDAO {
-
+    
+        DivisaoTreinoDAO divisaoTreino = new DivisaoTreinoDAO();
+        
         public DivisaoTreinoMusculo adiciona(DivisaoTreinoMusculo aplicacao) {
 
         String sql = "insert into divisaotreinomusculo"
@@ -34,7 +36,7 @@ public class DivisaoTreinoMusculoDAO {
 
             stmt.execute();
 
-            System.out.println("Divisão de Treino Musculo inserido com sucesso.");
+            System.out.println("\n");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -43,7 +45,7 @@ public class DivisaoTreinoMusculoDAO {
     }
 
     public List<DivisaoTreinoMusculo> lista(DivisaoTreinoMusculo divTreinoMusculo) {
-        String sql = "select * from exercicioaplicacao";
+        String sql = "select * from divisaotreinomusculo";
 
         List<DivisaoTreinoMusculo> aplicacoes = new ArrayList<>();
 
@@ -51,6 +53,7 @@ public class DivisaoTreinoMusculoDAO {
 
             while (rs.next()) {
                 Long id = rs.getLong("id");
+                Long idDivisaoTreino = rs.getLong("divisaoTreino");
                 String descricao = rs.getString("descricao");
                 Timestamp currentDateTimeC = rs.getTimestamp("dataCriacao");
                 Timestamp currentDateTimeM = rs.getTimestamp("dataModificacao");
@@ -62,6 +65,8 @@ public class DivisaoTreinoMusculoDAO {
 
                 aplicacao.setId(id);
                 aplicacao.setDescricao(descricao);
+                DivisaoTreino d = divisaoTreino.buscaPorId(idDivisaoTreino);
+                aplicacao.setDivisaoDeTreino(d);
                 aplicacao.setDataModificacao(dataEHoraAtualModificacao);
                 aplicacao.setDataCriacao(dataEHoraAtualCriacao);
                 
