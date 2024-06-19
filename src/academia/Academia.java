@@ -532,6 +532,7 @@ public class Academia {
     private void cadastrarDivisaoDeTreinoMusculo() {
         int opcao, id;
         DivisaoTreino divTreino;
+        DivisaoTreinoMusculo d;
         do {
             opcao = gui.menuCadastrarDivisaoDeTreinoMusculo();
 
@@ -568,22 +569,19 @@ public class Academia {
                     mostrarDivisoesDeTreinoMusculo();
                     System.out.println("\nEscolha o id do treino: \n");
                     id = Integer.parseInt(scan.nextLine());
-                    DivisaoTreinoMusculo d = obtemDivisaoDeTreinoMusculo(id);
+                    d = obtemDivisaoDeTreinoMusculo(id);
                     di_trei_musc.exclui(d);
                     
                     break;
                 case 4:
-//                    di_trei_musc.mostrarTodos();
-//                    System.out.println("Informe o id que deseja editar:");
-//                    id = Integer.parseInt(scan.nextLine());
-//
-//                    if (di_trei_musc.buscaPorId(id) != null) {
-//                        System.out.println("Informe o novo nome da Divisao de Treino:");
-//                        String novoNome = scan.nextLine();
-//                        System.out.println("Informe a nova descrição:");
-//                        String novaDescrição = scan.nextLine();
-//                        di_trei_musc.alterar(id, novoNome, novaDescrição);
-//                    }
+                    mostrarDivisoesDeTreinoMusculo();
+                    System.out.println("\nEscolha o id do treino: \n");
+                    id = Integer.parseInt(scan.nextLine());
+                    d = obtemDivisaoDeTreinoMusculo(id);
+                    List<DivisaoTreinoMusculo> lista;
+                    lista = di_trei_musc.lista(d);
+                    
+                    di_trei_musc.altera(d);
                     break;
                 case 5:
                     System.out.println("Saindo..");

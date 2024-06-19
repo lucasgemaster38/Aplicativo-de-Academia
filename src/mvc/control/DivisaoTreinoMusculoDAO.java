@@ -79,6 +79,8 @@ public class DivisaoTreinoMusculoDAO {
         // itera no ResultSet
         return aplicacoes;
     }
+    
+    
 
     public DivisaoTreinoMusculo exclui(DivisaoTreinoMusculo aplicacao) {
         String sql = "delete from divisaotreinomusculo where divisaoTreino = ?";
@@ -96,8 +98,8 @@ public class DivisaoTreinoMusculoDAO {
         return aplicacao;
     }
     
-        public Exercicio_Aplicacao altera(Exercicio_Aplicacao aplicacao) {
-        String sql = "update exercicioaplicacao set descricao = ?, dataModificacao = ? where id = ?";
+        public DivisaoTreinoMusculo altera(DivisaoTreinoMusculo aplicacao) {
+        String sql = "update divisaotreinoMusculo set descricao = ?, dataModificacao = ? where id = ?";
 
         try (Connection connection = new ConnectionFactory().getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
