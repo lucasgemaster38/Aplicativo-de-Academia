@@ -91,7 +91,7 @@ public class DivisaoTreinoMusculoDAO {
 
             stmt.execute();
 
-            System.out.println("Divisão Treino Musculo excluí­do com sucesso.");
+            System.out.println("Divisão Treino Musculo excluí­do com sucesso!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
